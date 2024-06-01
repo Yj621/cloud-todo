@@ -1,70 +1,182 @@
-//Navigator 컴포넌트안에서 Tab button 자동 구현
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import { Calendar } from 'react-native-calendars'; // react-native-calendars 패키지에서 Calendar 컴포넌트 import
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { Text, View } from "react-native";
-import { createContext, useContext, useState } from "react";
-import { Button } from "../components/Button";
+import CloudImg from './assets/cloud.png';
+import BlackCloudImg from './assets/cloud_black.png';
+import PlusImg from './assets/plus.png';
+import DeleteImg from './assets/delete.png';
+import TitleImg from './assets/Title.png';
+
 import styles from './styles';
 
-const Main = () => {
-  const { setPage } = useContext(Ctx);
+function App() {
+  const [date, setDate] = useState(new Date());
+  const [todos, setTodos] = useState({});
+  const [todoTitle, setTodoTitle] = useState({});
+  const [isEditingTitle, setIsEditingTitle] = useState(true);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  return (
-    <View>
-      <Text style={styles.text}> Main </Text>
-      <Button title="Board로 가기" onPress={() => setPage("board")} />
-    </View>
-  );
-};
+  const addDefaultTodo = () => {
+    const dateString = format(date, 'yyyy-MM-dd', { locale: ko });
+    const updatedTodos = {
+      ...todos,
+      [dateString]: [...(todos[dateString] || []), { text: "", completed: false, isEditing: true }]
+    };
+    setTodos(updatedTodos);
 
-const Board = () => {
-  const { setPage } = useContext(Ctx);
+    if (!todoTitle[dateString]) {
+      setTodoTitle({ ...todoTitle, [dateString]: "" });
+    }
+  };
 
-  return (
-    <>
-      <Text style={styles.text}> Board</Text>
-      <Button title="About 가기" onPress={() => setPage("about")} />
-    </>
-  );
-
-};
-
-const About = () => {
-  const { setPage } = useContext(Ctx);
-
-  return (
-    <View>
-      <Text style={styles.text}> About </Text>
-      <Button title="Main으로 가기" onPress={() => setPage("main")} />
-    </View>
-  );
-};
-
-const Ctx = createContext(null);
-
-//Navigator 컴포넌트안에서 Tab button 자동 구현 - children 속성 이용
-const Navigator = ({children}) => {
-  const[page,setPage] = useState("main");
-
-  return<Ctx.Provider value={{setPage}}>
-    <View>
-      <View style={{flexDirection: 'row'}}>
-        {
-          children.map(child =>
-            <Button title={child.props.name}
-              onPress={()=>setPage(child.props.name)}/>)
+  const updateTodoText = (date, index, text) => {
+    const dateString = format(date, 'yyyy-MM-dd', { locale: ko });
+    const updatedTodos = {
+      ...todos,
+      [dateString]: todos[dateString].map((todo, i) => {
+        if (i === index) {
+          return { ...todo, text };
         }
-      </View>
-    </View>{children.filter((child) => child.props.name == page)}
-  </Ctx.Provider>
-}
+        return todo;
+      })
+    };
+    setTodos(updatedTodos);
+  };
 
-export default function Navi03() {  
-  return (    
-    <Navigator>
-        <Main name="main"/>
-        <Board name="board"/>
-        <About name="about"/>
-    </Navigator>          
+  const toggleTodo = (date, index) => {
+    const dateString = format(date, 'yyyy-MM-dd', { locale: ko });
+    const updatedTodos = {
+      ...todos,
+      [dateString]: todos[dateString].map((todo, i) => {
+        if (i === index) {
+          return { ...todo, completed: !todo.completed, isEditing: false };
+        }
+        return todo;
+      })
+    };
+    setTodos(updatedTodos);
+  };
+
+  const deleteTodo = (date, index) => {
+    const dateString = format(date, 'yyyy-MM-dd', { locale: ko });
+    const updatedTodos = {
+      ...todos,
+      [dateString]: todos[dateString].filter((_, i) => i !== index)
+    };
+    setTodos(updatedTodos);
+  };
+
+  const getCurrentTodos = () => {
+    const dateString = format(date, 'yyyy-MM-dd', { locale: ko });
+    return todos[dateString] || [];
+  };
+
+  const handleTitleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setIsEditingTitle(false);
+    }
+  };
+
+  const handleTodoKeyDown = (e, date, index) => {
+    if (e.key === 'Enter') {
+      const dateString = format(date, 'yyyy-MM-dd', { locale: ko });
+      const updatedTodos = {
+        ...todos,
+        [dateString]: todos[dateString].map((todo, i) => {
+          if (i === index) {
+            return { ...todo, isEditing: false };
+          }
+          return todo;
+        })
+      };
+      setTodos(updatedTodos);
+    }
+  };
+
+  return (
+    <View style={styles.app}>
+      <Image source={TitleImg} style={styles.titleImg} />
+      <Text style={styles.appTitle}>할 일 목록</Text>
+      <View style={styles.appContainer}>
+        <View style={styles.calendarContainer}>
+          <Calendar
+            onDayPress={(day) => setDate(new Date(day.dateString))}
+            markedDates={{
+              [format(date, 'yyyy-MM-dd', { locale: ko })]: { selected: true, selectedColor: 'blue' }
+            }}
+          />
+        </View>
+        <View style={styles.todoContainer}>
+          <Text style={styles.todoTitle}>{format(date, 'PPP', { locale: ko })}의 할 일</Text>
+          <View style={styles.todoInputContainer}>
+            {isEditingTitle ? (
+              <TextInput
+                style={styles.addTodoTitle}
+                value={todoTitle[format(date, 'yyyy-MM-dd', { locale: ko })] || ""}
+                onChangeText={(text) => setTodoTitle({ ...todoTitle, [format(date, 'yyyy-MM-dd', { locale: ko })]: text })}
+                onSubmitEditing={handleTitleKeyDown}
+              />
+            ) : (
+              <Text style={styles.todoTitleText} onPress={() => setIsEditingTitle(true)}>
+                {todoTitle[format(date, 'yyyy-MM-dd', { locale: ko })] || ""}
+              </Text>
+            )}
+            {!isEditingTitle && (
+              <TouchableOpacity style={styles.addButton} onPress={addDefaultTodo}>
+                <Image source={PlusImg} style={styles.plusImg} />
+              </TouchableOpacity>
+            )}
+          </View>
+          <ScrollView style={styles.todoList}>
+            {getCurrentTodos().map((todo, index) => (
+              <View key={index} style={[styles.todoItem, todo.completed && styles.completed]}>
+                <TouchableOpacity style={styles.completeButton} onPress={() => toggleTodo(date, index)}>
+                  <Image 
+                    source={todo.completed ? CloudImg : BlackCloudImg} 
+                    style={styles.cloudImg} 
+                  />
+                </TouchableOpacity>
+                {todo.isEditing ? (
+                  <TextInput
+                    style={styles.todoInput}
+                    value={todo.text}
+                    onChangeText={(text) => updateTodoText(date, index, text)}
+                    onSubmitEditing={(e) => handleTodoKeyDown(e, date, index)}
+                  />
+                ) : (
+                  <Text
+                    style={styles.todoText}
+                    onPress={() => {
+                      const dateString = format(date, 'yyyy-MM-dd', { locale: ko });
+                      const updatedTodos = {
+                        ...todos,
+                        [dateString]: todos[dateString].map((todo, i) => {
+                          if (i === index) {
+                            return { ...todo, isEditing: true };
+                          }
+                          return todo;
+                        })
+                      };
+                      setTodos(updatedTodos);
+                    }}
+                  >
+                    {todo.text}
+                  </Text>
+                )}
+                <TouchableOpacity style={styles.deleteButton} onPress={() => deleteTodo(date, index)}>
+                  <Image source={DeleteImg} style={styles.deleteImg} />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      </View>
+    </View>
   );
 }
 
+export default App;
