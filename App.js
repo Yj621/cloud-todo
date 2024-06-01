@@ -41,6 +41,6 @@ import Navi08 from './src/ToyNavigationApp/Navi08';
 export default function App() {
   return <View style={{top: 30, flex: 1}}>
     <StatusBar style="auto" />
-    <Navi06 />    
+    <Navi03 />    
     </View>  
 }
