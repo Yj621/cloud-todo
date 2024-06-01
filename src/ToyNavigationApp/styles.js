@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
     width: Platform.OS === 'web' ? '60%' : '100%',
     textAlign: 'left',
     padding: 10,
-    backgroundColor: '#FFFFFF',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     marginTop: Platform.OS === 'web' ? 0 : 20,
+    backgroundColor: 'transparent', // Change this line to make the background transparent
   },
   todoTitle: {
     fontSize: 18,
