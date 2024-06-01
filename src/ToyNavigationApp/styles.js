@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 const styles = StyleSheet.create({
   app: {
@@ -9,49 +9,79 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   titleImg: {
-    position: 'absolute',
     top: 10,
-    left: 10,
+    left: 50,
     width: 170,
     height: 150,
   },
   appTitle: {
-    fontSize: 24,
+    fontSize: 30,
     color: '#333',
+    fontWeight: 'bold',
+    textAlign: 'center',
     marginBottom: 20,
+    marginTop: 30,
   },
   appContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    flex: 1,
+    justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
+    alignItems: Platform.OS === 'web' ? 'flex-start' : 'center',
     marginHorizontal: 40,
+    flexDirection: Platform.OS === 'web' ? 'row' : 'column',
   },
   calendarContainer: {
-    flex: 1,
+    width: Platform.OS === 'web' ? '40%' : '100%',
     padding: 10,
+    backgroundColor: '#FFFBF1',
   },
   dateText: {
     fontSize: 18,
   },
   todoContainer: {
-    flex: 2,
+    width: Platform.OS === 'web' ? '60%' : '100%',
     textAlign: 'left',
     padding: 10,
-    backgroundColor: '#FFFEF8',
+    backgroundColor: '#FFFFFF',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+    marginTop: Platform.OS === 'web' ? 0 : 20,
   },
   todoTitle: {
     fontSize: 18,
     color: '#333',
     marginBottom: 20,
   },
+  goalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  goalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  goalTitleInput: {
+    flex: 1,
+    fontSize: 18,
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  addGoalButton: {
+    backgroundColor: 'skyblue',
+    padding: 10,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  addGoalButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
   todoInputContainer: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
@@ -67,7 +97,6 @@ const styles = StyleSheet.create({
   },
   addButton: {
     padding: 10,
-    backgroundColor: '#0b79f7',
     borderRadius: 5,
   },
   plusImg: {
@@ -75,13 +104,11 @@ const styles = StyleSheet.create({
     height: 40,
   },
   todoList: {
-    listStyleType: 'none',
     padding: 0,
   },
   todoItem: {
     padding: 10,
-    margin: 10,
-    display: 'flex',
+    marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
