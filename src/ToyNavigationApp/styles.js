@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     marginTop: Platform.OS === 'web' ? 0 : 20,
-    backgroundColor: 'transparent', // Change this line to make the background transparent
+    backgroundColor: 'transparent',
   },
   todoTitle: {
     fontSize: 18,
@@ -57,20 +57,31 @@ const styles = StyleSheet.create({
   goalHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginVertical: 10,
+    backgroundColor: '#D9D9D9',
+    width: '30%',
+    borderRadius: 20,
   },
   goalTitle: {
-    fontSize: 18,
+    flex: 1, 
+    alignItems: 'center',
+    padding: 10,
+    fontSize: 18, 
     fontWeight: 'bold',
+    marginLeft: 20,
   },
   goalTitleInput: {
-    flex: 1,
+    flex: 1, 
+    padding: 10,
     fontSize: 18,
-    padding: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    alignItems: 'center',
+    backgroundColor: '#D9D9D9',
+    borderRadius: 20,
+    borderWidth: 1,
+    width: '30%',
+    borderColor: '#ddd',
+    marginLeft: 20,
   },
+  
   addGoalButton: {
     backgroundColor: 'skyblue',
     padding: 10,
@@ -112,9 +123,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: 2, 
-    borderBottomColor: 'black', 
-    fontWeight: 'bold', 
+    borderBottomWidth: 2,
+    borderBottomColor: 'black',
+    fontWeight: 'bold',
+  },
+  contentTextInput: {
+    flex: 1,
+    padding: 10,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+    marginRight: 10,
+    width: '70%', // Adjust width as needed
   },
   
   completed: {
