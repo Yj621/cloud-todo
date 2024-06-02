@@ -1,3 +1,5 @@
+// styles.js
+
 import { StyleSheet, Platform } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -58,29 +60,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#D9D9D9',
-    width: '30%',
-    borderRadius: 20,
+    borderRadius: 30,
+    paddingVertical: 10, // 패딩을 조절하여 높이 조절
+    paddingHorizontal: 20, 
+    width: 'auto', 
+    minWidth: 200, 
+    maxWidth: '90%', 
   },
   goalTitle: {
-    flex: 1, 
-    alignItems: 'center',
-    padding: 10,
-    fontSize: 18, 
+    flex: 1, // flex 추가
+    fontSize: 18,
     fontWeight: 'bold',
-    marginLeft: 20,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   },
   goalTitleInput: {
-    flex: 1, 
-    padding: 10,
+    flex: 1,
+    paddingVertical: 10, // 상하 padding 추가
+    paddingHorizontal: 10, // 좌우 padding 추가
     fontSize: 18,
-    alignItems: 'center',
     backgroundColor: '#D9D9D9',
-    borderRadius: 20,
+    borderRadius: 30,
     borderWidth: 1,
-    width: '30%',
     borderColor: '#ddd',
-    marginLeft: 20,
+    minWidth: 100,
+    maxWidth: '90%',
   },
+  
   
   addGoalButton: {
     backgroundColor: 'skyblue',
@@ -137,7 +144,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
     width: '70%', // Adjust width as needed
   },
-  
   completed: {
     textDecorationLine: 'line-through',
   },

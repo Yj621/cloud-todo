@@ -93,26 +93,26 @@ function App() {
           <ScrollView style={styles.todoList}>
             {goals.map((goalId) => (
               <View key={goalId}>
-                <View style={styles.goalHeader}>
-  {isEditingTitle[goalId] ? (
-    <TextInput
-      style={styles.goalTitleInput}
-      value={goalTitles[goalId]}
-      onChangeText={(text) => updateGoalTitle(goalId, text)}
-      onSubmitEditing={(e) => handleTitleKeyDown(e, goalId)}
-    />
-  ) : (
-    <Text
-      style={[styles.goalTitle, { flexGrow: 1 }]} // Add flexGrow style
-      onPress={() => setIsEditingTitle({ ...isEditingTitle, [goalId]: true })}
-    >
-      {goalTitles[goalId]}
-    </Text>
-  )}
-  <TouchableOpacity style={styles.addButton} onPress={() => addContentToGoal(goalId)}>
-    <Image source={PlusImg} style={styles.plusImg} />
-  </TouchableOpacity>
-</View>
+                <View style={[styles.goalHeader, { width: Math.max(40, goalTitles[goalId].length * 25) }]}>
+                  {isEditingTitle[goalId] ? (
+                    <TextInput
+                      style={styles.goalTitleInput}
+                      value={goalTitles[goalId]}
+                      onChangeText={(text) => updateGoalTitle(goalId, text)}
+                      onSubmitEditing={(e) => handleTitleKeyDown(e, goalId)}
+                    />
+                  ) : (
+                    <Text
+                      style={styles.goalTitle}
+                      onPress={() => setIsEditingTitle({ ...isEditingTitle, [goalId]: true })}
+                    >
+                      {goalTitles[goalId]}
+                    </Text>
+                  )}
+                  <TouchableOpacity style={styles.addButton} onPress={() => addContentToGoal(goalId)}>
+                    <Image source={PlusImg} style={styles.plusImg} />
+                  </TouchableOpacity>
+                </View>
 
                 {goalContents[goalId]?.map((content, index) => (
                   <View key={index} style={[styles.todoItem, content.completed && styles.completed]}>
