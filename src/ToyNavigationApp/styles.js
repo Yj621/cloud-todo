@@ -112,11 +112,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#f9f9f9',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
+    borderBottomWidth: 2, 
+    borderBottomColor: 'black', 
+    fontWeight: 'bold', 
   },
+  
   completed: {
     textDecorationLine: 'line-through',
   },
