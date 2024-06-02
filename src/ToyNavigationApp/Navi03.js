@@ -77,7 +77,7 @@ function App() {
   };
 
   return (
-    <View style={styles.app}>
+    <ScrollView style={styles.app}>
       <Image source={TitleImg} style={styles.titleImg} />
       <View style={styles.appContainer}>
         <View style={styles.calendarContainer}>
@@ -154,8 +154,9 @@ function App() {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 export default App;
+                 
