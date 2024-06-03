@@ -152,10 +152,12 @@ function App() {
   };
 
   return (
-    <ScrollView>
     <KeyboardAvoidingView
-      behavior={Platform.select({ ios: 'padding', android: undefined })}
+    behavior={Platform.select({ ios: 'padding', android: undefined })}
       style={styles.avoid}>
+    <ScrollView>
+    
+      
       <View style={styles.app}>
         <Image source={TitleImg} style={styles.titleImg} />
         <View style={styles.appContainer}>
@@ -245,8 +247,9 @@ function App() {
           </View>
         </View>
       </View>
-    </KeyboardAvoidingView>
     </ScrollView>
+    </KeyboardAvoidingView>
+
   );
 }
 

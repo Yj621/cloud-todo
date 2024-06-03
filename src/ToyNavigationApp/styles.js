@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 1,
     borderColor: '#ddd',
+    height: 40,
     minWidth: 100,
     maxWidth: '90%',
   },
@@ -95,6 +96,7 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     marginTop: 10,
+    marginBottom: '30%',
   },
   addGoalButtonText: {
     color: 'white',
