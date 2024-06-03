@@ -152,10 +152,11 @@ function App() {
   };
 
   return (
+    <ScrollView>
     <KeyboardAvoidingView
       behavior={Platform.select({ ios: 'padding', android: undefined })}
       style={styles.avoid}>
-      <ScrollView style={styles.app}>
+      <View style={styles.app}>
         <Image source={TitleImg} style={styles.titleImg} />
         <View style={styles.appContainer}>
           <View style={styles.calendarContainer}>
@@ -243,8 +244,9 @@ function App() {
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 

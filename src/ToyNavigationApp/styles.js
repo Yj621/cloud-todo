@@ -196,6 +196,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight: 10,
   },
+  keyboardAvoidingContainer: {
+    flex: 1,
+  },
+  
 });
 
 export default styles;
