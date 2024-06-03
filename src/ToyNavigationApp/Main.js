@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, Image, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Calendar } from 'react-native-calendars';
@@ -153,46 +153,52 @@ function App() {
   };
 
   return (
-    <ScrollView style={styles.app}>
-      <Image source={TitleImg} style={styles.titleImg} />
-      <View style={styles.appContainer}>
-        <View style={styles.calendarContainer}>
-          <Calendar
-            onDayPress={(day) => setDate(new Date(day.dateString))}
-            markedDates={getMarkedDates()}
-          />
-        </View>
-        <View style={styles.todoContainer}>
-          <Text style={styles.todoTitle}>{format(date, 'PPP', { locale: ko })}의 할 일</Text>
-          <ScrollView style={styles.todoList}>
-            {goals.map((goalId) => (
-              <View key={goalId}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View style={[styles.goalHeader, { width: Math.max(40, goalTitles[goalId]?.length * 25 || 40) }]}>
-                    {isEditingTitle[goalId] ? (
-                      <TextInput
-                        style={styles.goalTitleInput}
-                        value={goalTitles[goalId]}
-                        onChangeText={(text) => updateGoalTitle(goalId, text)}
-                        onSubmitEditing={(e) => handleTitleKeyDown(e, goalId)}
-                      />
-                    ) : (
-                      <Text
-                        style={styles.goalTitle}
-                        onPress={() => setIsEditingTitle({ ...isEditingTitle, [goalId]: true })}
-                      >
-                        {goalTitles[goalId]}
-                      </Text>
-                    )}
-                    <TouchableOpacity style={styles.addButton} onPress={() => addContentToGoal(goalId)}>
-                      <Image source={PlusImg} style={styles.plusImg} />
+    <KeyboardAvoidingView
+      behavior={Platform.select({ ios: 'padding', android: undefined })}
+      style={styles.avoid}>
+      <ScrollView style={styles.app}>
+        <Image source={TitleImg} style={styles.titleImg} />
+        <View style={styles.appContainer}>
+          <View style={styles.calendarContainer}>
+            <Calendar
+              onDayPress={(day) => setDate(new Date(day.dateString))}
+              markedDates={getMarkedDates()}
+            />
+          </View>
+          <View style={styles.todoContainer}>
+            <Text style={styles.todoTitle}>{format(date, 'PPP', { locale: ko })}의 할 일</Text>
+            <ScrollView style={styles.todoList}>
+              {goals.map((goalId) => (
+                <View key={goalId}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={[styles.goalHeader, { width: Math.max(40, goalTitles[goalId]?.length * 25 || 40) }]}>
+                      {isEditingTitle[goalId] ? (
+                        <TextInput
+                          style={styles.goalTitleInput}
+                          value={goalTitles[goalId]}
+                          onChangeText={(text) => updateGoalTitle(goalId, text)}
+                          onSubmitEditing={() => setIsEditingTitle({ ...isEditingTitle, [goalId]: false })}
+                        />
+
+                      ) : (
+                        <Text
+                          style={styles.goalTitle}
+                          onPress={() => setIsEditingTitle({ ...isEditingTitle, [goalId]: true })}
+                        >
+                          {goalTitles[goalId]}
+                        </Text>
+                      )}
+
+                      <TouchableOpacity style={styles.addButton} onPress={() => addContentToGoal(goalId)}>
+                        <Image source={PlusImg} style={styles.plusImg} />
+                      </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity style={styles.deleteGoalButton} onPress={() => deleteGoal(goalId)}>
+                      <Image source={GoldeleteImg} style={styles.GoldeleteImg} />
                     </TouchableOpacity>
                   </View>
-                  <TouchableOpacity style={styles.deleteGoalButton} onPress={() => deleteGoal(goalId)}>
-                    <Image source={GoldeleteImg} style={styles.GoldeleteImg} />
-                  </TouchableOpacity>
-                </View>
 
+<<<<<<< HEAD
                 {goalContents[goalId]?.map((content, index) => (
                   <View key={index} style={[styles.todoItem, content.completed && styles.completed]}>
                     <TouchableOpacity style={styles.completeButton} onPress={() => toggleContentCompletion(goalId, index)}>
@@ -230,16 +236,54 @@ function App() {
                 <View style={styles.progressBarContainer}>
                   <View style={[styles.progressBar, { width: `${calculateProgress(goalId)}%` }]} />
                   <Text style={styles.progressText}>진행률: {calculateProgress(goalId)}%</Text>
+=======
+                  {goalContents[goalId]?.map((content, index) => (
+                    <View key={index} style={[styles.todoItem, content.completed && styles.completed]}>
+                      <TouchableOpacity style={styles.completeButton} onPress={() => toggleContentCompletion(goalId, index)}>
+                        <Image source={content.completed ? CloudImg : BlackCloudImg} style={styles.cloudImg} />
+                      </TouchableOpacity>
+                      {content.isEditing ? (
+                        <TextInput
+                          style={styles.todoInput}
+                          value={content.text}
+                          onChangeText={(text) => updateContentText(goalId, index, text)}
+                          onSubmitEditing={(e) => handleContentKeyDown(e, goalId, index)}
+                        />
+                      ) : (
+                        <Text
+                          style={styles.todoText}
+                          onPress={() => {
+                            setGoalContents({
+                              ...goalContents,
+                              [goalId]: goalContents[goalId].map((content, i) => i === index ? { ...content, isEditing: true } : content)
+                            });
+                          }}
+                        >
+                          {content.text}
+                        </Text>
+                      )}
+                      <TouchableOpacity style={styles.deleteButton} onPress={() => deleteContent(goalId, index)}>
+                        <Image source={DeleteImg} style={styles.deleteImg} />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+
+                  {/* Add progress bar */}
+                  <View style={styles.progressBarContainer}>
+                    <View style={[styles.progressBar, { width: `${calculateProgress(goalId)}%` }]} />
+                    <Text style={styles.progressText}>진행률: {calculateProgress(goalId)}%</Text>
+                  </View>
+>>>>>>> main
                 </View>
-              </View>
-            ))}
-          </ScrollView>
-          <TouchableOpacity style={styles.addGoalButton} onPress={addGoal}>
-            <Text style={styles.addGoalButtonText}>목표 추가하기</Text>
-          </TouchableOpacity>
+              ))}
+            </ScrollView>
+            <TouchableOpacity style={styles.addGoalButton} onPress={addGoal}>
+              <Text style={styles.addGoalButtonText}>목표 추가하기</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
