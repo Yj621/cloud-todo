@@ -171,11 +171,12 @@ function App() {
                   <View style={[styles.goalHeader, { width: Math.max(40, goalTitles[goalId]?.length * 25 || 40) }]}>
                     {isEditingTitle[goalId] ? (
                       <TextInput
-                        style={styles.goalTitleInput}
-                        value={goalTitles[goalId]}
-                        onChangeText={(text) => updateGoalTitle(goalId, text)}
-                        onSubmitEditing={(e) => handleTitleKeyDown(e, goalId)}
-                      />
+                      style={{ ...styles.goalTitleInput, flex: 0 }} // flex: 0으로 수정
+                      value={goalTitles[goalId]}
+                      onChangeText={(text) => updateGoalTitle(goalId, text)}
+                      onSubmitEditing={(e) => handleTitleKeyDown(e, goalId)}
+                    />
+                    
                     ) : (
                       <Text
                         style={styles.goalTitle}

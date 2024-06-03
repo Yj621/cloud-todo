@@ -61,14 +61,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#D9D9D9',
     borderRadius: 30,
-    paddingVertical: 10, // 패딩을 조절하여 높이 조절
+    paddingVertical: 10,
     paddingHorizontal: 20, 
+    height: '60%',
     width: 'auto', 
     minWidth: 200, 
     maxWidth: '90%', 
   },
   goalTitle: {
-    flex: 1, // flex 추가
+    flex: 1, 
     fontSize: 18,
     fontWeight: 'bold',
     overflow: 'hidden',
@@ -77,8 +78,8 @@ const styles = StyleSheet.create({
   },
   goalTitleInput: {
     flex: 1,
-    paddingVertical: 10, // 상하 padding 추가
-    paddingHorizontal: 10, // 좌우 padding 추가
+    paddingVertical: 10, 
+    paddingHorizontal: 10, 
     fontSize: 18,
     backgroundColor: '#D9D9D9',
     borderRadius: 30,
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 5,
     marginRight: 10,
-    width: '70%', // Adjust width as needed
+    width: '70%',
   },
   completed: {
     textDecorationLine: 'line-through',
@@ -173,8 +174,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   GoldeleteImg: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     marginRight: 50,
   },
   todoInput: {
