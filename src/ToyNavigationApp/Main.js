@@ -207,7 +207,10 @@ function App() {
                       />
                     ) : (
                       <Text
-                        style={styles.todoText}
+                        style={[
+                          styles.todoText,
+                          content.completed && { textDecorationLine: 'line-through' }
+                        ]}
                         onPress={() => {
                           setGoalContents({
                             ...goalContents,
@@ -223,8 +226,7 @@ function App() {
                     </TouchableOpacity>
                   </View>
                 ))}
-
-                {/* Add progress bar */}
+                
                 <View style={styles.progressBarContainer}>
                   <View style={[styles.progressBar, { width: `${calculateProgress(goalId)}%` }]} />
                   <Text style={styles.progressText}>진행률: {calculateProgress(goalId)}%</Text>
