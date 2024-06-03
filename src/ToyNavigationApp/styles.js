@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
+    //textOverflow: 'ellipsis',
   },
   goalTitleInput: {
     flex: 1,
