@@ -179,7 +179,6 @@ function App() {
                           onChangeText={(text) => updateGoalTitle(goalId, text)}
                           onSubmitEditing={() => setIsEditingTitle({ ...isEditingTitle, [goalId]: false })}
                         />
-
                       ) : (
                         <Text
                           style={styles.goalTitle}
@@ -188,7 +187,6 @@ function App() {
                           {goalTitles[goalId]}
                         </Text>
                       )}
-
                       <TouchableOpacity style={styles.addButton} onPress={() => addContentToGoal(goalId)}>
                         <Image source={PlusImg} style={styles.plusImg} />
                       </TouchableOpacity>
@@ -199,7 +197,7 @@ function App() {
                   </View>
 
                   {goalContents[goalId]?.map((content, index) => (
-                    <View key={index} style={[styles.todoItem, content.completed && styles.completed]}>
+                    <View key={index} style={styles.todoItem}>
                       <TouchableOpacity style={styles.completeButton} onPress={() => toggleContentCompletion(goalId, index)}>
                         <Image source={content.completed ? CloudImg : BlackCloudImg} style={styles.cloudImg} />
                       </TouchableOpacity>
@@ -212,7 +210,10 @@ function App() {
                         />
                       ) : (
                         <Text
-                          style={styles.todoText}
+                          style={[
+                            styles.todoText,
+                            content.completed && { textDecorationLine: 'line-through' }
+                          ]}
                           onPress={() => {
                             setGoalContents({
                               ...goalContents,
@@ -229,7 +230,6 @@ function App() {
                     </View>
                   ))}
 
-                  {/* Add progress bar */}
                   <View style={styles.progressBarContainer}>
                     <View style={[styles.progressBar, { width: `${calculateProgress(goalId)}%` }]} />
                     <Text style={styles.progressText}>진행률: {calculateProgress(goalId)}%</Text>
