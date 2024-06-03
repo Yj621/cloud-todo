@@ -115,6 +115,12 @@ function App() {
     }
   };
 
+  const calculateProgress = (goalId) => {
+    const totalItems = goalContents[goalId]?.length || 0;
+    const completedItems = goalContents[goalId]?.filter(content => content.completed)?.length || 0;
+    return totalItems === 0 ? 0 : Math.round((completedItems / totalItems) * 100);
+  };
+
   const getMarkedDates = () => {
     const markedDates = {};
     for (const date in dailyData) {
@@ -154,58 +160,65 @@ function App() {
                     <Text
                       style={styles.goalTitle}
                       onPress={() => setIsEditingTitle({ ...isEditingTitle, [goalId]: true })}
-                    >
-                      {goalTitles[goalId]}
-                    </Text>
-                  )}
-                  <TouchableOpacity style={styles.addButton} onPress={() => addContentToGoal(goalId)}>
-                    <Image source={PlusImg} style={styles.plusImg} />
-                  </TouchableOpacity>
-                </View>
-
-                {goalContents[goalId]?.map((content, index) => (
-                  <View key={index} style={[styles.todoItem, content.completed && styles.completed]}>
-                    <TouchableOpacity style={styles.completeButton} onPress={() => toggleContentCompletion(goalId, index)}>
-                      <Image
-                        source={content.completed ? CloudImg : BlackCloudImg}
-                        style={styles.cloudImg}
-                      />
-                    </TouchableOpacity>
-                    {content.isEditing ? (
-                      <TextInput
-                        style={styles.todoInput}
-                        value={content.text}
-                        onChangeText={(text) => updateContentText(goalId, index, text)}
-                        onSubmitEditing={(e) => handleContentKeyDown(e, goalId, index)}
-                      />
-                    ) : (
-                      <Text
-                        style={styles.todoText}
-                        onPress={() => {
-                          setGoalContents({
-                            ...goalContents,
-                            [goalId]: goalContents[goalId].map((content, i) => i === index ? { ...content, isEditing: true } : content)
-                          });
-                        }}
                       >
-                        {content.text}
+                        {goalTitles[goalId]}
                       </Text>
                     )}
-                    <TouchableOpacity style={styles.deleteButton} onPress={() => deleteContent(goalId, index)}>
-                      <Image source={DeleteImg} style={styles.deleteImg} />
+                    <TouchableOpacity style={styles.addButton} onPress={() => addContentToGoal(goalId)}>
+                      <Image source={PlusImg} style={styles.plusImg} />
                     </TouchableOpacity>
                   </View>
-                ))}
-              </View>
-            ))}
-          </ScrollView>
-          <TouchableOpacity style={styles.addGoalButton} onPress={addGoal}>
-            <Text style={styles.addGoalButtonText}>목표 추가하기</Text>
-          </TouchableOpacity>
+  
+                  {goalContents[goalId]?.map((content, index) => (
+                    <View key={index} style={[styles.todoItem, content.completed && styles.completed]}>
+                      <TouchableOpacity style={styles.completeButton} onPress={() => toggleContentCompletion(goalId, index)}>
+                        <Image
+                          source={content.completed ? CloudImg : BlackCloudImg}
+                          style={styles.cloudImg}
+                        />
+                      </TouchableOpacity>
+                      {content.isEditing ? (
+                        <TextInput
+                          style={styles.todoInput}
+                          value={content.text}
+                          onChangeText={(text) => updateContentText(goalId, index, text)}
+                          onSubmitEditing={(e) => handleContentKeyDown(e, goalId, index)}
+                        />
+                      ) : (
+                        <Text
+                          style={styles.todoText}
+                          onPress={() => {
+                            setGoalContents({
+                              ...goalContents,
+                              [goalId]: goalContents[goalId].map((content, i) => i === index ? { ...content, isEditing: true } : content)
+                            });
+                          }}
+                        >
+                          {content.text}
+                        </Text>
+                      )}
+                      <TouchableOpacity style={styles.deleteButton} onPress={() => deleteContent(goalId, index)}>
+                        <Image source={DeleteImg} style={styles.deleteImg} />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+  
+                  {/* Add progress bar */}
+                  <View style={styles.progressBarContainer}>
+                    <View style={[styles.progressBar, { width: `${calculateProgress(goalId)}%` }]} />
+                    <Text style={styles.progressText}>진행률: {calculateProgress(goalId)}%</Text>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+            <TouchableOpacity style={styles.addGoalButton} onPress={addGoal}>
+              <Text style={styles.addGoalButtonText}>목표 추가하기</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ScrollView>
-  );
-}
-
-export default App;
+      </ScrollView>
+    );
+  }
+  
+  export default App;
+  
