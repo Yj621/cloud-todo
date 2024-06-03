@@ -10,6 +10,7 @@ import BlackCloudImg from './assets/cloud_black.png';
 import PlusImg from './assets/plus.png';
 import DeleteImg from './assets/delete.png';
 import TitleImg from './assets/Title.png';
+import GoldeleteImg from './assets/Goldelete.png';
 
 import styles from './styles';
 
@@ -38,8 +39,8 @@ function App() {
       [dateString]: {
         goals: newGoals,
         goalTitles: newGoalTitles,
-        goalContents: newGoalContents
-      }
+        goalContents: newGoalContents,
+      },
     });
   };
 
@@ -55,10 +56,22 @@ function App() {
     saveDailyData(newGoals, newGoalTitles, newGoalContents);
   };
 
+  const deleteGoal = (goalId) => {
+    const newGoals = goals.filter((id) => id !== goalId);
+    const newGoalTitles = { ...goalTitles };
+    const newGoalContents = { ...goalContents };
+    delete newGoalTitles[goalId];
+    delete newGoalContents[goalId];
+    setGoals(newGoals);
+    setGoalTitles(newGoalTitles);
+    setGoalContents(newGoalContents);
+    saveDailyData(newGoals, newGoalTitles, newGoalContents);
+  };
+
   const addContentToGoal = (goalId) => {
     const newGoalContents = {
       ...goalContents,
-      [goalId]: [...(goalContents[goalId] || []), { text: '', completed: false, isEditing: true }]
+      [goalId]: [...(goalContents[goalId] || []), { text: '', completed: false, isEditing: true }],
     };
     setGoalContents(newGoalContents);
     saveDailyData(goals, goalTitles, newGoalContents);
@@ -73,7 +86,9 @@ function App() {
   const updateContentText = (goalId, index, text) => {
     const newGoalContents = {
       ...goalContents,
-      [goalId]: goalContents[goalId].map((content, i) => i === index ? { ...content, text } : content)
+      [goalId]: goalContents[goalId].map((content, i) =>
+        i === index ? { ...content, text } : content
+      ),
     };
     setGoalContents(newGoalContents);
     saveDailyData(goals, goalTitles, newGoalContents);
@@ -82,7 +97,9 @@ function App() {
   const toggleContentCompletion = (goalId, index) => {
     const newGoalContents = {
       ...goalContents,
-      [goalId]: goalContents[goalId].map((content, i) => i === index ? { ...content, completed: !content.completed, isEditing: false } : content)
+      [goalId]: goalContents[goalId].map((content, i) =>
+        i === index ? { ...content, completed: !content.completed, isEditing: false } : content
+      ),
     };
     setGoalContents(newGoalContents);
     saveDailyData(goals, goalTitles, newGoalContents);
@@ -91,7 +108,7 @@ function App() {
   const deleteContent = (goalId, index) => {
     const newGoalContents = {
       ...goalContents,
-      [goalId]: goalContents[goalId].filter((_, i) => i !== index)
+      [goalId]: goalContents[goalId].filter((_, i) => i !== index),
     };
     setGoalContents(newGoalContents);
     saveDailyData(goals, goalTitles, newGoalContents);
@@ -108,7 +125,9 @@ function App() {
     if (e.key === 'Enter') {
       const newGoalContents = {
         ...goalContents,
-        [goalId]: goalContents[goalId].map((content, i) => i === index ? { ...content, isEditing: false } : content)
+        [goalId]: goalContents[goalId].map((content, i) =>
+          i === index ? { ...content, isEditing: false } : content
+        ),
       };
       setGoalContents(newGoalContents);
       saveDailyData(goals, goalTitles, newGoalContents);
@@ -117,7 +136,7 @@ function App() {
 
   const calculateProgress = (goalId) => {
     const totalItems = goalContents[goalId]?.length || 0;
-    const completedItems = goalContents[goalId]?.filter(content => content.completed)?.length || 0;
+    const completedItems = goalContents[goalId]?.filter((content) => content.completed)?.length || 0;
     return totalItems === 0 ? 0 : Math.round((completedItems / totalItems) * 100);
   };
 
@@ -140,7 +159,7 @@ function App() {
         <View style={styles.calendarContainer}>
           <Calendar
             onDayPress={(day) => setDate(new Date(day.dateString))}
-            markedDates={getMarkedDates()} // Updated prop
+            markedDates={getMarkedDates()}
           />
         </View>
         <View style={styles.todoContainer}>
@@ -148,18 +167,19 @@ function App() {
           <ScrollView style={styles.todoList}>
             {goals.map((goalId) => (
               <View key={goalId}>
-                <View style={[styles.goalHeader, { width: Math.max(40, goalTitles[goalId]?.length * 25 || 40) }]}>
-                  {isEditingTitle[goalId] ? (
-                    <TextInput
-                      style={styles.goalTitleInput}
-                      value={goalTitles[goalId]}
-                      onChangeText={(text) => updateGoalTitle(goalId, text)}
-                      onSubmitEditing={(e) => handleTitleKeyDown(e, goalId)}
-                    />
-                  ) : (
-                    <Text
-                      style={styles.goalTitle}
-                      onPress={() => setIsEditingTitle({ ...isEditingTitle, [goalId]: true })}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={[styles.goalHeader, { width: Math.max(40, goalTitles[goalId]?.length * 25 || 40) }]}>
+                    {isEditingTitle[goalId] ? (
+                      <TextInput
+                        style={styles.goalTitleInput}
+                        value={goalTitles[goalId]}
+                        onChangeText={(text) => updateGoalTitle(goalId, text)}
+                        onSubmitEditing={(e) => handleTitleKeyDown(e, goalId)}
+                      />
+                    ) : (
+                      <Text
+                        style={styles.goalTitle}
+                        onPress={() => setIsEditingTitle({ ...isEditingTitle, [goalId]: true })}
                       >
                         {goalTitles[goalId]}
                       </Text>
@@ -168,57 +188,57 @@ function App() {
                       <Image source={PlusImg} style={styles.plusImg} />
                     </TouchableOpacity>
                   </View>
-  
-                  {goalContents[goalId]?.map((content, index) => (
-                    <View key={index} style={[styles.todoItem, content.completed && styles.completed]}>
-                      <TouchableOpacity style={styles.completeButton} onPress={() => toggleContentCompletion(goalId, index)}>
-                        <Image
-                          source={content.completed ? CloudImg : BlackCloudImg}
-                          style={styles.cloudImg}
-                        />
-                      </TouchableOpacity>
-                      {content.isEditing ? (
-                        <TextInput
-                          style={styles.todoInput}
-                          value={content.text}
-                          onChangeText={(text) => updateContentText(goalId, index, text)}
-                          onSubmitEditing={(e) => handleContentKeyDown(e, goalId, index)}
-                        />
-                      ) : (
-                        <Text
-                          style={styles.todoText}
-                          onPress={() => {
-                            setGoalContents({
-                              ...goalContents,
-                              [goalId]: goalContents[goalId].map((content, i) => i === index ? { ...content, isEditing: true } : content)
-                            });
-                          }}
-                        >
-                          {content.text}
-                        </Text>
-                      )}
-                      <TouchableOpacity style={styles.deleteButton} onPress={() => deleteContent(goalId, index)}>
-                        <Image source={DeleteImg} style={styles.deleteImg} />
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-  
-                  {/* Add progress bar */}
-                  <View style={styles.progressBarContainer}>
-                    <View style={[styles.progressBar, { width: `${calculateProgress(goalId)}%` }]} />
-                    <Text style={styles.progressText}>진행률: {calculateProgress(goalId)}%</Text>
-                  </View>
+                  <TouchableOpacity style={styles.deleteGoalButton} onPress={() => deleteGoal(goalId)}>
+                    <Image source={GoldeleteImg} style={styles.GoldeleteImg} />
+                  </TouchableOpacity>
                 </View>
-              ))}
-            </ScrollView>
-            <TouchableOpacity style={styles.addGoalButton} onPress={addGoal}>
-              <Text style={styles.addGoalButtonText}>목표 추가하기</Text>
-            </TouchableOpacity>
-          </View>
+
+                {goalContents[goalId]?.map((content, index) => (
+                  <View key={index} style={[styles.todoItem, content.completed && styles.completed]}>
+                    <TouchableOpacity style={styles.completeButton} onPress={() => toggleContentCompletion(goalId, index)}>
+                      <Image source={content.completed ? CloudImg : BlackCloudImg} style={styles.cloudImg} />
+                    </TouchableOpacity>
+                    {content.isEditing ? (
+                      <TextInput
+                        style={styles.todoInput}
+                        value={content.text}
+                        onChangeText={(text) => updateContentText(goalId, index, text)}
+                        onSubmitEditing={(e) => handleContentKeyDown(e, goalId, index)}
+                      />
+                    ) : (
+                      <Text
+                        style={styles.todoText}
+                        onPress={() => {
+                          setGoalContents({
+                            ...goalContents,
+                            [goalId]: goalContents[goalId].map((content, i) => i === index ? { ...content, isEditing: true } : content)
+                          });
+                        }}
+                      >
+                        {content.text}
+                      </Text>
+                    )}
+                    <TouchableOpacity style={styles.deleteButton} onPress={() => deleteContent(goalId, index)}>
+                      <Image source={DeleteImg} style={styles.deleteImg} />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+
+                {/* Add progress bar */}
+                <View style={styles.progressBarContainer}>
+                  <View style={[styles.progressBar, { width: `${calculateProgress(goalId)}%` }]} />
+                  <Text style={styles.progressText}>진행률: {calculateProgress(goalId)}%</Text>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
+          <TouchableOpacity style={styles.addGoalButton} onPress={addGoal}>
+            <Text style={styles.addGoalButtonText}>목표 추가하기</Text>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-    );
-  }
-  
-  export default App;
-  
+      </View>
+    </ScrollView>
+  );
+}
+
+export default App;

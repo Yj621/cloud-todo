@@ -168,6 +168,15 @@ const styles = StyleSheet.create({
     height: 10,
     marginRight: 10,
   },
+  deleteGoal: {
+    padding: 5,
+    borderRadius: 5,
+  },
+  GoldeleteImg: {
+    width: 50,
+    height: 50,
+    marginRight: 50,
+  },
   todoInput: {
     flex: 1,
     padding: 10,
