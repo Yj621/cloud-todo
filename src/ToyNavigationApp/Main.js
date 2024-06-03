@@ -80,7 +80,6 @@ function App() {
   const updateGoalTitle = (goalId, title) => {
     const newGoalTitles = { ...goalTitles, [goalId]: title };
     setGoalTitles(newGoalTitles);
-    saveDailyData(goals, newGoalTitles, goalContents);
   };
 
   const updateContentText = (goalId, index, text) => {
@@ -115,14 +114,14 @@ function App() {
   };
 
   const handleTitleKeyDown = (e, goalId) => {
-    if (e.key === 'Enter') {
+    if (e.nativeEvent.key === 'Enter') {
       setIsEditingTitle({ ...isEditingTitle, [goalId]: false });
       saveDailyData(goals, goalTitles, goalContents);
     }
   };
 
   const handleContentKeyDown = (e, goalId, index) => {
-    if (e.key === 'Enter') {
+    if (e.nativeEvent.key === 'Enter') {
       const newGoalContents = {
         ...goalContents,
         [goalId]: goalContents[goalId].map((content, i) =>
@@ -177,7 +176,8 @@ function App() {
                           style={styles.goalTitleInput}
                           value={goalTitles[goalId]}
                           onChangeText={(text) => updateGoalTitle(goalId, text)}
-                          onSubmitEditing={() => setIsEditingTitle({ ...isEditingTitle, [goalId]: false })}
+                          onKeyPress={(e) => handleTitleKeyDown(e, goalId)}
+                          autoFocus
                         />
                       ) : (
                         <Text
@@ -206,7 +206,8 @@ function App() {
                           style={styles.todoInput}
                           value={content.text}
                           onChangeText={(text) => updateContentText(goalId, index, text)}
-                          onSubmitEditing={(e) => handleContentKeyDown(e, goalId, index)}
+                          onKeyPress={(e) => handleContentKeyDown(e, goalId, index)}
+                          autoFocus
                         />
                       ) : (
                         <Text

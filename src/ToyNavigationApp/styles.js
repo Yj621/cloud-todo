@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flexDirection: Platform.OS === 'web' ? 'row' : 'column',
   },
   calendarContainer: {
-    width: Platform.OS === 'web' ? '40%' : '100%',
+    width: Platform.OS === 'web' ? '40%' : '130%',
     padding: 10,
     backgroundColor: '#FFFBF1',
   },
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   todoContainer: {
-    width: Platform.OS === 'web' ? '60%' : '100%',
+    width: Platform.OS === 'web' ? '60%' : '130%',
     textAlign: 'left',
     padding: 10,
     borderRadius: 10,
